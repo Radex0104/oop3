@@ -27,8 +27,8 @@ public:
     void append(const char* other_str) {
         size_t other_size = strlen(other_str);
         char* res = new char[size_ + other_size + 1];
-        strcpy(res, size_ + 1, str_);
-        strcpy(res + size_, other_size + 1, other_str);
+        strcpy_s(res, size_ + 1, str_);
+        strcpy_s(res + size_, other_size + 1, other_str);
 
         delete[] str_;
         str_ = res;
@@ -37,8 +37,8 @@ public:
 
     String concat(const String& otherString) {
         char* res = new char[size_ + otherString.size_ + 1];
-        strcpy(res, size_ + 1, str_);
-        strcpy(res + size_, otherString.size_ + 1, otherString.str_);
+        strcpy_s(res, size_ + 1, str_);
+        strcpy_s(res + size_, otherString.size_ + 1, otherString.str_);
         String result(res);
         return result;
     }
