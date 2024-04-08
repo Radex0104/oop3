@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cassert>
 
 class String {
 private:
@@ -86,9 +87,17 @@ public:
 
 };
 
+void test()
+{
+    const char* c_str = "Hello, World!";
+    String ss(c_str);
+    assert(ss.getSize() == 13);
+    //assert(ss.getCString() == "Hello, World!");
+}
 
 int main()
 {
+    test();
     const char* c_str = "Hello, World!";
     String myString(c_str);
 
