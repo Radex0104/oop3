@@ -11,7 +11,7 @@ public:
     {
         size_ = strlen(c_str);
         str_ = new char[size_ + 1];
-        strcpy_s(str_, size_ + 1, c_str);
+        strcpy(str_, c_str);
     }
 
     String(size_t count, char ch)
@@ -26,8 +26,8 @@ public:
     void append(const char* other_str) {
         size_t other_size = strlen(other_str);
         char* res = new char[size_ + other_size + 1];
-        strcpy_s(res, size_ + 1, str_);
-        strcpy_s(res + size_, other_size + 1, other_str);
+        strcpy(res, str_);
+        strcpy(res + size_, other_str);
 
         delete[] str_;
         str_ = res;
@@ -36,8 +36,8 @@ public:
 
     String concat(const String& otherString) {
         char* res = new char[size_ + otherString.size_ + 1];
-        strcpy_s(res, size_ + 1, str_);
-        strcpy_s(res + size_, otherString.size_ + 1, otherString.str_);
+        strcpy(res,  str_);
+        strcpy(res + size_, otherString.str_);
         String result(res);
         return result;
     }
