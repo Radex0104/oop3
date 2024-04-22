@@ -1,22 +1,21 @@
 #include<iostream>
 #include<cassert>
 #include<string.h>
+#include <sstream>
+#include<cmath>
 
 class String {
 private:
-    char* str_; // Óêàçàòåëü íà C-ñòðîêó
-    size_t size_; // Ðàçìåð ñòðîêè (áåç ó÷åòà çàâåðøàþùåãî íóëåâîãî ñèìâîëà)
+    char* str_;
+    size_t size_;
 public:
-    // Êîíñòðóêòîð, êîòîðûé ïðèíèìàåò C-style ñòðîêó
-    String(const char* c_str)
-    {
+    String(const char* c_str) {
         size_ = strlen(c_str);
         str_ = new char[size_ + 1];
         strcpy(str_, c_str);
     }
 
-    String(size_t count, char ch)
-    {
+    String(size_t count, char ch) {
         size_ = count;
         str_ = new char[size_ + 1];
         for (size_t i = 0; i < size_; i++)
@@ -24,6 +23,23 @@ public:
         str_[size_] = '\0';
     }
  
+    String(const String& other) {
+        size_ = other.size_;
+        str_ = new char[size_ + 1];
+        std::strncpy(str_, other.str_, size_);
+        str_[size_] = '\0';
+    }
+
+    void swap(String& a) {
+        std::swap(size_, a.size_);
+        std::swap(str_, a.str_);
+    }
+
+    String & operator=(const String& a) {
+        if (this != &a)
+            String(a).swap(*this);
+    }
+
     void append(const char* other_str) {
         size_t other_size = strlen(other_str);
         char* res = new char[size_ + other_size + 1];
@@ -73,8 +89,7 @@ public:
         }
     }
 
-    ~String()
-    {
+    ~String() {
         size_ = 0;
         delete[] str_;
     }
@@ -82,49 +97,157 @@ public:
     size_t getSize() {
         return size_;
     }
+
     const char* getCString() {
         return str_;
+    }
+};
+
+////////////////////////////////////
+
+double print_data(double a) {
+    return a;
+}
+int print_data(int a) {
+    return a;
+}
+std::string print_data(std::string a) {
+    return a;
+}
+
+////////////////////////////////////
+
+class Person {
+private:
+    char* lname_;
+    char* fname_;
+    size_t age_;
+public:
+
+    Person(const char* c_str, const char* cc_str, size_t c_age) {
+        age_ = c_age;
+        size_t c = strlen(c_str);
+        size_t cc = strlen(cc_str);
+        fname_ = new char[c + 1];
+        lname_ = new char[cc + 1];
+        strcpy(fname_, c_str);
+        strcpy(lname_, cc_str);
+    }
+
+    Person(const char* c_str) {
+        size_t c = strlen(c_str);
+        fname_ = new char[c+1];
+        lname_ = NULL;
+        strcpy(fname_, c_str);
+        age_ = NULL;
+    }
+
+    Person(const char* c_str, const char* cc_str) {
+        size_t c = strlen(c_str);
+        size_t cc = strlen(cc_str);
+        fname_ = new char[c + 1];
+        lname_ = new char[cc + 1];
+        strcpy(fname_, c_str);
+        strcpy(lname_, cc_str);
+        age_ = NULL;
+    }
+
+    Person(const char* c_str, size_t c_age) {
+        age_ = c_age;
+        size_t c = strlen(c_str);
+        fname_ = new char[c + 1];
+        lname_ = NULL;
+        strcpy(fname_, c_str);
+    }
+
+    std::string display_info(size_t f) {
+        std::ostringstream os;
+        setlocale(LC_ALL, "ru");
+        os << "���: " << fname_ << std::endl;
+        return os.str();
+    }
+    std::string display_info(size_t f, char n) {
+        std::ostringstream os;
+        setlocale(LC_ALL, "ru");
+        os << "���: " << fname_ << std::endl << "�������: " << age_ << std::endl;
+        return os.str();
+    }
+    std::string display_info(size_t f, char n, size_t ff) {
+        std::ostringstream os;
+        setlocale(LC_ALL, "ru");
+        os << "���: " << fname_ << std::endl << "�������: " << lname_ << std::endl << "�������: " << age_ << std::endl;
+        return os.str();
+    }
+
+    ~Person() {
+        age_ = 0;
+        delete[] fname_;
+        delete[] lname_;
     }
 
 };
 
-void test()
-{
+////////////////////////////////////
+
+class Shape {
+public:
+    virtual double calculate_area() = 0;
+};
+
+class Rectangle : public Shape {
+private:
+    double width;
+    double height;
+
+public:
+    Rectangle(double w, double h) : width(w), height(h) {}
+
+    double calculate_area() {
+        return width * height;
+    }
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+
+public:
+    Circle(double r) : radius(r) {}
+
+    double calculate_area() {
+        return 3.14159 * radius * radius;
+    }
+};
+
+class Triangle : public Shape {
+private:
+    double width;
+    double height;
+    double ug;
+public:
+    Triangle(double w, double h, double u): width(w), height(h), ug(u) {}
+
+    double calculate_area() {
+        return (width * height * sin(ug))/2;
+    }
+};
+
+void test() {
     const char* c_str = "Hello, World!";
     String ss(c_str);
+    std::string s1 = "Hello, World!";
+    int s2 = 322;
+    double s3 = 322.2;
     assert(ss.getSize() == 13);
+    assert(print_data(s1) == "Hello, World!");
+    assert(print_data(s2) == 322);
+    assert(print_data(s3) == 322.2);
     //assert(ss.getCString() == "Hello, World!");
 }
 
-int main()
-{
+int main() {
     test();
-    const char* c_str = "Hello, World!";
-    String myString(c_str);
-
-    String myString2(5, 'c');
-
-    const char* initial_str = "Hello ";
-    const char* append_str = "World!";
-
-    String myString3(initial_str);
-    myString3.append(append_str);
-
-    const char* hello = "Hello ";
-    const char* world = "World";
-
-    String helloStr(hello);
-    String worldStr(world);
-    String combined = helloStr.concat(worldStr);
-    std::cout << "String content: " << combined.getCString() << std::endl;
-    combined.toLower();
-    std::cout << "Uppercase String: " << combined.getCString() << std::endl;
-    //std::cout << "String size: " << myString.getSize() << std::endl;
-    //std::cout << "String content: " << myString.getCString() << std::endl;
-    //std::cout << "String size: " << myString2.getSize() << std::endl;
-    //std::cout << "String content: " << myString2.getCString() << std::endl;
-    //std::cout << "String content: " << myString3.getCString() << std::endl;
-    //std::cout << "String content: " << combined.getCString() << std::endl;
-    //std::cout << "String content: " << helloStr.compare(worldStr) << std::endl;
-
+    Triangle d(2, 1, 3.14 / 2);
+    std::cout<<d.calculate_area();
+    return 0;
 }
