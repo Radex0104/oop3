@@ -38,6 +38,7 @@ public:
     String & operator=(const String& a) {
         if (this != &a)
             String(a).swap(*this);
+        return *this;
     }
 
     void append(const char* other_str) {
