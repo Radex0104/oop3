@@ -238,10 +238,16 @@ void test() {
     std::string s1 = "Hello, World!";
     int s2 = 322;
     double s3 = 322.2;
+    Triangle d(2, 1, 3.14 / 2);
+    Circle c(2);
+    Rectangle r(2, 3);
     assert(ss.getSize() == 13);
     assert(print_data(s1) == "Hello, World!");
     assert(print_data(s2) == 322);
     assert(print_data(s3) == 322.2);
+    assert(d.calculate_area() == 1);
+    assert(c.calculate_area() == 3.14159 * 2 * 2);
+    assert(r.calculate_area() == 6);
     //assert(ss.getCString() == "Hello, World!");
 }
 
