@@ -26,7 +26,7 @@ public:
     String(const String& other) {
         size_ = other.size_;
         str_ = new char[size_ + 1];
-        std::strncpy(str_, other.str_, size_);
+        strncpy(str_, other.str_, size_);
         str_[size_] = '\0';
     }
 
